@@ -1,0 +1,75 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 19,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "default",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "debug",
+      "inherits": "default",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "release",
+      "inherits": "default"
+    },
+    {
+      "name": "linux-amd64-r",
+      "inherits": "default",
+      "binaryDir": "${sourceDir}/build-linux-amd64/release",
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "WSL"
+        }
+      }
+    },
+    {
+      "name": "linux-arm64-r",
+      "inherits": "default",
+      "binaryDir": "${sourceDir}/build-linux-arm64/release",
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "RasPi"
+        }
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "Host-Debug",
+      "configurePreset": "debug"
+    },
+    {
+      "name": "Host-Release",
+      "configurePreset": "release"
+    },
+    {
+      "name": "Docker-x86_64",
+      "configurePreset": "linux-amd64-r",
+      "targets": ["COVERT_flight"]
+    },
+    {
+      "name": "Docker-ARM64",
+      "configurePreset": "linux-arm64-r",
+      "targets": ["COVERT_flight"]
+    }
+  ]
+}

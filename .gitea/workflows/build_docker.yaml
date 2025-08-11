@@ -1,0 +1,26 @@
+name: Build and publish Doxygen documentation to MSI documentation server
+run-name: ${{ gitea.actor }} is attempting to build and upload the Doxygen documentation...
+on: [push]
+
+jobs:
+  build:
+    runs-on: pi
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+        with:
+          ref: 'master'
+      - name: Generate CMake Project
+        run: |
+          cmake --preset linux-arm64-r
+      - name: Build COVERT_flight
+        run: |
+          cmake --build --preset Docker-ARM64
+      - name: Build Docker Image
+        run: |
+          docker rmi covert --force
+          cd COVERT_flight
+          docker build . --tag covert --no-cache
+      - name: Get COVERT version number and push container
+        run: |
+          python dev_utils/docker_version.py

@@ -1,0 +1,19 @@
+# Visual Studio / VSCode / CLion
+/.vs/
+/.vscode/
+/.idea/
+
+# Output data files
+/output_data/
+
+# Build Results
+/build*/
+/out/
+/docs/
+
+# CMake Generated Files
+/CMakeFiles/
+/ListenerLib/CMakeFiles/
+
+# FLEXX2 Calibration Files
+/*.cal
